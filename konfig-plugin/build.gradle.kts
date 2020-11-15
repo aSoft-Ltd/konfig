@@ -1,16 +1,26 @@
 plugins {
-    id("tz.co.asoft.plugin.maker")
+    `kotlin-dsl`
+    `java-gradle-plugin`
+    id("com.gradle.plugin-publish") version "0.12.0"
 }
 
-dependencies {
-    api("com.android.tools.build:gradle:${versions.android.build_tools}")
+repositories {
+    mavenLocal()
+    google()
+    jcenter()
+    mavenCentral()
 }
 
 gradlePlugin {
     plugins {
         val konfig by creating {
             id = "tz.co.asoft.konfig"
-            implementationClass = "KonfigGradlePlugin"
+            implementationClass = "tz.co.asoft.KonfigGradlePlugin"
+        }
+
+        val application by creating {
+            id = "tz.co.asoft.application"
+            implementationClass = "tz.co.asoft.ApplicationGradlePlugin"
         }
     }
 }
@@ -25,11 +35,20 @@ pluginBundle {
             displayName = "Konfig Plugin"
             tags = listOf("kotlin", "configuration")
         }
+
+        val application by getting {
+            displayName = "Application Plugin"
+            tags = listOf("kotlin", "application", "frontend")
+        }
     }
 }
 
+object vers {
+    val asoft_konfig = "0.0.1"
+    val kotlin = "1.4.10"
+}
 group = "tz.co.asoft"
-version = "0.0.1"
+version = vers.asoft_konfig
 
 defaultTasks("jar")
 
@@ -47,7 +66,5 @@ artifacts {
 }
 
 dependencies {
-    api("com.android.tools.build:gradle:${versions.android_build_tools}")
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}")
-    api("org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:${vers.kotlin}")
 }
