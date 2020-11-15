@@ -26,6 +26,16 @@ class JvmApplicationKonfig(val project: Project, val konfig: Konfig) {
             dependsOn(konfig.generateKonfigFileTaskName)
             with(tasks.findByName("jar") as Jar)
             doFirst {
+                if (!konfig.values.containsKey("Main-Class"))
+                    error("""
+                        |Please add "Main-Class" attribute to ${konfig.name} configuration
+                        |example
+                        |konfig {
+                        |    ${konfig.name}(
+                        |        "Main-Class" to "tz.co.asoft.MainKt"
+                        |    )
+                        |}
+                    """.trimMargin())
                 manifest { attributes(konfig.values.mapValues { (_, v) -> v.toString() }) }
                 val runtime = configurations.getByName("runtimeClasspath")
                 val resDir = target.compilations.getByName("main").defaultSourceSet.resources

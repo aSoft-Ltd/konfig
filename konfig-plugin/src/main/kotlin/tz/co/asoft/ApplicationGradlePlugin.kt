@@ -25,6 +25,9 @@ open class ApplicationGradlePlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) = with(project) {
+        if (!plugins.hasPlugin("tz.co.asoft.konfig")) {
+            plugins.apply(KonfigGradlePlugin::class.java)
+        }
         when {
             plugins.hasPlugin("org.jetbrains.kotlin.jvm") -> applyJvmConfiguration()
             plugins.hasPlugin("org.jetbrains.kotlin.js") -> applyJsConfiguration()

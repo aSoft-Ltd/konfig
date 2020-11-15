@@ -6,6 +6,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 open class KonfigExtension(val project: Project) {
+    private var kommon = Konfig("common", mapOf())
     internal val konfigs = mutableListOf<Konfig>()
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -15,6 +16,7 @@ open class KonfigExtension(val project: Project) {
         }
         Konfig(name, buildMap {
             put("name", name)
+            putAll(kommon.values)
             putAll(properties)
             val namespace = project.group.toString()
             put("namespace", namespace)
@@ -26,6 +28,10 @@ open class KonfigExtension(val project: Project) {
                 konfig = it
             }
         }
+    }
+
+    fun common(vararg properties: Pair<String, Any>) {
+        kommon = Konfig("common", kommon.values + properties)
     }
 
     fun debug(name: String, vararg properties: Pair<String, Any>) = konfig(name, *properties)

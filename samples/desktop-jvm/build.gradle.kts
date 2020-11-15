@@ -17,9 +17,13 @@ application {
 }
 
 konfig {
+    common(
+        "Main-Class" to "tz.co.asoft.MainKt"
+    )
+
     debug(
         "link" to "http://debug.com",
-        "Main-Class" to "tz.co.asoft.MainKt"
+        "Main-Class" to "tz.co.asoft"
     )
 
     staging(
@@ -33,7 +37,7 @@ konfig {
 
 kotlin {
     target.compilations.all {
-        kotlinOptions{
+        kotlinOptions {
             jvmTarget = "1.8"
             useIR = true
         }
