@@ -6,15 +6,15 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 open class KonfigExtension(val project: Project) {
-    private var kommon = Konfig("common", mapOf())
+    private var kommon = Konfig("common", Konfig.Type.RELEASE, mapOf())
     internal val konfigs = mutableListOf<Konfig>()
 
     @OptIn(ExperimentalStdlibApi::class)
-    internal fun konfig(name: String, vararg properties: Pair<String, Any>) {
+    internal fun konfig(name: String, type: Konfig.Type, vararg properties: Pair<String, Any>) {
         if (konfigs.any { it.name.contains(name, ignoreCase = true) }) {
             error("Konfig $name already exists")
         }
-        Konfig(name, buildMap {
+        Konfig(name, type, buildMap {
             put("name", name)
             putAll(kommon.values)
             putAll(properties)
@@ -31,13 +31,13 @@ open class KonfigExtension(val project: Project) {
     }
 
     fun common(vararg properties: Pair<String, Any>) {
-        kommon = Konfig("common", kommon.values + properties)
+        kommon = Konfig("common", Konfig.Type.RELEASE, kommon.values + properties)
     }
 
-    fun debug(name: String, vararg properties: Pair<String, Any>) = konfig(name, *properties)
+    fun debug(name: String, vararg properties: Pair<String, Any>) = konfig(name, Konfig.Type.DEBUG, *properties)
     fun debug(vararg properties: Pair<String, Any>) = debug("debug", *properties)
-    fun staging(name: String, vararg properties: Pair<String, Any>) = konfig(name, *properties)
+    fun staging(name: String, vararg properties: Pair<String, Any>) = konfig(name, Konfig.Type.STAGING, *properties)
     fun staging(vararg properties: Pair<String, Any>) = staging("staging", *properties)
-    fun release(name: String, vararg properties: Pair<String, Any>) = konfig(name, *properties)
+    fun release(name: String, vararg properties: Pair<String, Any>) = konfig(name, Konfig.Type.RELEASE, *properties)
     fun release(vararg properties: Pair<String, Any>) = release("release", *properties)
 }

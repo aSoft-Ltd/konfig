@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("js") version "1.4.10"
     id("tz.co.asoft.konfig")
     id("tz.co.asoft.application")
 }
@@ -12,15 +12,7 @@ repositories {
 group = "tz.co.asoft"
 version = "2020.2"
 
-application {
-    mainClassName = "tz.co.asoft.MainKt"
-}
-
 konfig {
-    common(
-        "Main-Class" to "tz.co.asoft.MainKt"
-    )
-
     debug(
         "link" to "http://debug.com"
     )
@@ -35,11 +27,16 @@ konfig {
 }
 
 kotlin {
-    target.compilations.all {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            useIR = true
+    js(IR) {
+        browser{
+            webpackTask {
+                devServer = devServer?.copy(
+                    open = false
+                )
+                cssSupport.enabled = true
+            }
         }
+        binaries.executable()
     }
 }
 

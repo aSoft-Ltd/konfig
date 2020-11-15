@@ -14,6 +14,7 @@ open class GenerateKonfigFileTask : DefaultTask() {
         const val DEFAULT_KONFIG_FILE_NAME = "tz.co.asoft.konfig.json"
         fun defaultFolderLocation(project: Project) = when {
             project.plugins.hasPlugin("org.jetbrains.kotlin.jvm") -> "build/resources/main"
+            project.plugins.hasPlugin("org.jetbrains.kotlin.js") -> "build/resources/main"
             else -> "build/resources/main"
         }.let { File(it).apply { mkdirs() } }
 
@@ -26,7 +27,7 @@ open class GenerateKonfigFileTask : DefaultTask() {
     }
 
     @Input
-    var konfig = Konfig("default", mapOf("name" to "default"))
+    var konfig = Konfig("default", Konfig.Type.DEBUG, mapOf("name" to "default"))
 
     @OutputDirectory
     var outputDir = defaultFolderLocation(project)

@@ -20,8 +20,10 @@ open class ApplicationGradlePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.applyJsConfiguration() {
-
+    private fun Project.applyJsConfiguration() = afterEvaluate {
+        extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
+            JsApplicationKonfig(project, it)
+        }
     }
 
     override fun apply(project: Project) = with(project) {
