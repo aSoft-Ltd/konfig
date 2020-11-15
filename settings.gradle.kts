@@ -2,17 +2,23 @@ pluginManagement {
     repositories {
         google()
         jcenter()
+        gradlePluginPortal()
         mavenCentral()
     }
-}
-rootProject.name = "konfig"
-listOf("../../build-src/code").mapNotNull {
-    file(it).takeIf { file -> file.exists() }
-}.forEach {
-    includeBuild(it.relativeTo(file(".")))
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.namespace == "com.android") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+        }
+    }
 }
 
+rootProject.name = "konfig"
+
 include(":konfig")
+include(":konfig-plugin")
 
 //includeBuild("../build-src")
 //includeBuild("../frontend")
