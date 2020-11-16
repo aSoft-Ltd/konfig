@@ -9,9 +9,14 @@ import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import java.io.File
 
-class OnlyAndroidApplicationKonfig(val project: Project, val konfig: Konfig) {
+class ApplicationKonfigAndroid(
+    val project: Project,
+    val konfig: Konfig,
+    val mppTarget: KotlinAndroidTarget? = null
+) {
     init {
         with(project) {
             configureAssetsTasks(konfig)
@@ -23,7 +28,7 @@ class OnlyAndroidApplicationKonfig(val project: Project, val konfig: Konfig) {
         tasks.findByName(
             "merge${konfig.name.capitalize()}Resources"
         )?.apply {
-            dependsOn(konfig.generateKonfigFileTaskName)
+            dependsOn(konfig.generateKonfigFileTaskName(mppTarget))
         }
     }
 
@@ -33,7 +38,7 @@ class OnlyAndroidApplicationKonfig(val project: Project, val konfig: Konfig) {
         val variant = variants?.find { it.name.equals(konfig.name, ignoreCase = true) } ?: return
         val installTask = tasks.findByName("install${konfig.name.capitalize()}") ?: return
 
-        tasks.create<Exec>("installRun${konfig.name.capitalize()}") {
+        tasks.create<Exec>("installRun${mppTarget?.name?.capitalize() ?: ""}${konfig.name.capitalize()}") {
             group = "run"
             dependsOn(installTask)
             commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")

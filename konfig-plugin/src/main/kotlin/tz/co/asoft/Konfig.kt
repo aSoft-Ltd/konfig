@@ -1,5 +1,6 @@
 package tz.co.asoft
 
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import java.io.Serializable
 
 data class Konfig(val name: String, val type: Type, val values: Map<String, Any>) : Serializable {
@@ -8,4 +9,10 @@ data class Konfig(val name: String, val type: Type, val values: Map<String, Any>
     }
 }
 
-val Konfig.generateKonfigFileTaskName get() = "generate${name.capitalize()}KonfigFile"
+fun Konfig.generateKonfigFileTaskName(mppTarget: KotlinTarget?): String {
+    return if (mppTarget == null) {
+        "generate${name.capitalize()}KonfigFile"
+    } else {
+        "generate${mppTarget.name.capitalize()}${name.capitalize()}KonfigFile"
+    }
+}

@@ -6,12 +6,16 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import kotlin.reflect.jvm.internal.impl.descriptors.annotations.KotlinTarget
 
 open class PrepareWebpackConfigDirTask : DefaultTask() {
     @OutputDirectory
     var configDir: File = File(project.projectDir, "webpack.config.d").apply {
         if (!exists()) mkdirs()
     }
+
+    @Input
+    var mppTarget: KotlinTarget? = null
 
     @Input
     var outputFilename: String = "konfig.js"
@@ -24,6 +28,6 @@ open class PrepareWebpackConfigDirTask : DefaultTask() {
 
     @TaskAction
     fun prepare() {
-        outputFile.writeText("""config.resolve.modules.push("../resources/main")""")
+        outputFile.writeText("""config.resolve.modules.push("../resources/${mppTarget?.name ?: "main"}")""")
     }
 }

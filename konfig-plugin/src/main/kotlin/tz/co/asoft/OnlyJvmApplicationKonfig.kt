@@ -23,7 +23,7 @@ class OnlyJvmApplicationKonfig(val project: Project, val konfig: Konfig) {
             group = "assemble"
             archiveBaseName.value("${project.name}-${konfig.name}")
             archiveVersion.value(version.toString())
-            dependsOn(konfig.generateKonfigFileTaskName)
+            dependsOn(konfig.generateKonfigFileTaskName(null))
             with(tasks.findByName("jar") as Jar)
             doFirst {
                 if (!konfig.values.containsKey("Main-Class"))
@@ -47,7 +47,7 @@ class OnlyJvmApplicationKonfig(val project: Project, val konfig: Konfig) {
 
     private fun Project.createInstallDistTask(konfig: Konfig) = tasks.create<Copy>("installDist${konfig.name.capitalize()}") {
         group = "install"
-        dependsOn(konfig.generateKonfigFileTaskName, "installDist")
+        dependsOn(konfig.generateKonfigFileTaskName(null), "installDist")
         from(File(buildDir, "install/${project.name}"))
         into(File(buildDir, "binaries/${konfig.name}"))
         doLast {
@@ -57,7 +57,7 @@ class OnlyJvmApplicationKonfig(val project: Project, val konfig: Konfig) {
 
     private fun Project.createRunTask(konfig: Konfig) = tasks.create("run${konfig.name.capitalize()}") {
         group = "run"
-        dependsOn(konfig.generateKonfigFileTaskName)
+        dependsOn(konfig.generateKonfigFileTaskName(null))
         finalizedBy("run")
     }
 }

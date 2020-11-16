@@ -2,8 +2,10 @@ package tz.co.asoft
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 open class KonfigExtension(val project: Project) {
     private var kommon = Konfig("common", Konfig.Type.RELEASE, mapOf())
@@ -22,10 +24,24 @@ open class KonfigExtension(val project: Project) {
             put("namespace", namespace)
             put("package", "$namespace.$name")
             put("version", project.version.toString())
-        }).also {
-            konfigs.add(it)
-            project.tasks.create<GenerateKonfigFileTask>("generate${name.capitalize()}KonfigFile") {
-                konfig = it
+        }).also { konfig ->
+            konfigs.add(konfig)
+            val ext = project.extensions.findByType(KotlinMultiplatformExtension::class.java)
+            if (ext == null) {
+                project.tasks.create<GenerateKonfigFileTask>("generate${konfig.name.capitalize()}KonfigFile") {
+                    this.konfig = konfig
+                }
+            } else {
+                project.afterEvaluate {
+                    ext.targets.filter { target ->
+                        target is KotlinAndroidTarget || target is KotlinJvmTarget || target is KotlinJsTarget
+                    }.forEach { target ->
+                        tasks.create<GenerateKonfigFileTask>("generate${target.name.capitalize()}${konfig.name.capitalize()}KonfigFile") {
+                            this.konfig = konfig
+                            mppTarget = target
+                        }
+                    }
+                }
             }
         }
     }
