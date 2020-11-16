@@ -1,12 +1,8 @@
 package tz.co.asoft
 
-import kotlinx.serialization.properties.Properties
-import kotlinx.serialization.properties.decodeFromMap
-
-fun konfig(): Map<String, Any> {
-    val error = Throwable("Can't locate konfig.json file")
+fun konfig(): WrappedMap {
+    val error = Throwable("Can't locate $KONFIG_JSON_FILE")
     val classLoader = ClassLoader.getSystemClassLoader()
-    val stream = classLoader.getResourceAsStream("konfig.json") ?: throw error
-    val p = Properties.decodeFromMap<>(mapOf())
-    return stream.bufferedReader().readText().toJsonObject().toMap()
+    val stream = classLoader.getResourceAsStream(KONFIG_JSON_FILE) ?: throw error
+    return Mapper.decodeFromString(stream.bufferedReader().readText())
 }

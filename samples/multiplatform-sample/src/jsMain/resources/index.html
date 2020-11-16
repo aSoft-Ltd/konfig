@@ -1,0 +1,117 @@
+<html>
+<head>
+    <title>Browser Sample</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/logo/logo_icon_green.png"/>
+    <link rel="stylesheet" href="/fonts/FuturaBT-Light.woff"/>
+    <style>
+        *,*::before,*::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: "FUTURA_P";
+            font-style: normal;
+            font-weight: 400;
+            src: url("/fonts/FuturaBT-Light.eot?#iefix") format("embedded-opentype"), url("/fonts/FuturaBT-Light.woff") format("woff"), url("/fonts/FUTURAL.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: "GOTHAM_ROUNDED";
+            font-style: normal;
+            font-weight: 400;
+            src: url("/fonts/GothamRoundedBook_21018.ttf") format("truetype");
+        }
+
+        ul.control-dots {
+            transform: scale(0);
+            right: 40%;
+            top: 90%;
+        }
+
+        .slider-wrapper .carousel-slider {
+            width: 100%;
+            z-index: 33
+        }
+
+        body {
+            width: 100vw;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        #root {
+            font-size: 0.9em;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+            height: 100vh;
+            margin: 0px;
+            padding: 0px;
+            justify-content: flex-start;
+            font-family: "GOTHAM_ROUNDED";
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: #353535;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border: solid 1px #aaaaaa;
+            background-color: #353535;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #353535;
+        }
+
+        .initial-render {
+            margin-top: 10vh;
+            margin-bottom: 10vh;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <div class="initial-render">
+        <h1>
+            Browser Sample
+        </h1>
+        <img id=loader src="/imgs/loading/loader.svg" style="min-width: 200px"/>
+        <br/>
+        <h1>
+            Give us a second please
+        </h1>
+    </div>
+</div>
+</body>
+<script>
+    function loadScript(src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.type = "text/javascript";
+        document.body.appendChild(script);
+    }
+
+    setTimeout(function () {
+        loadScript("/multiplatform-sample.js")
+    }, 10);
+</script>
+</html>

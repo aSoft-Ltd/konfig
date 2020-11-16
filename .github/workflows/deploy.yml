@@ -1,0 +1,189 @@
+name: Build Konfig Samples
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  ASOFT_MAVEN_PGP_PRIVATE_KEY: ${{ secrets.ASOFT_MAVEN_PGP_PRIVATE_KEY }}
+  ASOFT_MAVEN_PGP_PASSWORD: ${{ secrets.ASOFT_MAVEN_PGP_PASSWORD }}
+  ASOFT_NEXUS_PASSWORD: ${{ secrets.ASOFT_NEXUS_PASSWORD }}
+  ASOFT_NEXUS_USERNAME: ${{ secrets.ASOFT_NEXUS_USERNAME }}
+
+jobs:
+  build-sample-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Generating Sample Apk
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
+        working-directory: ./samples/android-sample
+
+  build-sample-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Webpacking Browser
+        run: |
+          chmod +x ./gradlew
+          ./gradlew webpackDebug
+        working-directory: ./samples/browser-sample
+
+  build-sample-desktop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Running App
+        run: |
+          chmod +x ./gradlew
+          ./gradlew runDebug
+        working-directory: ./samples/desktop-jvm
+
+  build-sample-mpp-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: generating apk
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
+        working-directory: ./samples/multiplatform-sample
+
+  build-sample-mpp-jvm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Running jvm app
+        run: |
+          chmod +x ./gradlew
+          ./gradlew runJvmDebug
+        working-directory: ./samples/multiplatform-sample
+
+  build-sample-mpp-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: packing website
+        run: |
+          chmod +x ./gradlew
+          ./gradlew webpackJsRelease
+        working-directory: ./samples/multiplatform-sample
+
+  publish-runtime:
+    runs-on: ubuntu-latest
+    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Making gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: .
+      - name: Building the lib
+        run: ./gradlew build
+        working-directory: .
+      - name: Publishing to sonatype nexus
+        run: ./gradlew publish
+        working-directory: .
+      - name: Closing And Releasing Repository
+        run: ./gradlew closeAndReleaseRepository
+        working-directory: .
+
+  publish-plugins:
+    runs-on: ubuntu-latest
+    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Publishing konfig and application plugins to gradle plugin portal
+        run: |
+          chmod +x ./gradlew
+          ./gradlew publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
+        working-directory: .
