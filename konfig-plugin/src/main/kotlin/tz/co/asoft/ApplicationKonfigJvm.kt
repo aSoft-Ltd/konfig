@@ -53,6 +53,7 @@ class ApplicationKonfigJvm(val project: Project, val konfig: Konfig, val mppTarg
         group = "run"
         dependsOn("fatJar${target.name.capitalize()}${konfig.name.capitalize()}")
         commandLine("java", "-jar", "${project.name}-${target.name}-${konfig.name}-${this@createMppRunTask.version}.jar")
+        workingDir("build/libs")
     }
 
     private fun Project.createFatJarTask() = extensions.findByType<KotlinJvmProjectExtension>()?.apply {

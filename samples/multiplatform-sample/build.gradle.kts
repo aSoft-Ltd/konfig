@@ -22,6 +22,9 @@ group = "tz.co.asoft"
 version = "2020.2"
 
 konfig {
+    common(
+        "Main-Class" to "tz.co.asoft.MainKt"
+    )
     debug(
         "change" to 1,
         "authors" to mapOf(
@@ -41,6 +44,10 @@ konfig {
 
 kotlin {
     android {
+        targetJava("1.8")
+    }
+
+    jvm{
         targetJava("1.8")
     }
 

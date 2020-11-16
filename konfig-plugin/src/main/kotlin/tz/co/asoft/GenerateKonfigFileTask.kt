@@ -19,7 +19,7 @@ open class GenerateKonfigFileTask : DefaultTask() {
             project.plugins.hasPlugin("org.jetbrains.kotlin.android") -> "build/intermediates/merged_assets/${konfig.name}/out"
             project.plugins.hasPlugin("org.jetbrains.kotlin.multiplatform") -> when (mppTarget) {
                 is KotlinAndroidTarget -> "build/intermediates/merged_assets/${konfig.name}/out"
-                is KotlinJvmTarget -> "build/resources/${mppTarget.name}"
+                is KotlinJvmTarget -> "build/processedResources/${mppTarget.name}/main"
                 is KotlinJsTarget -> "build/resources/${mppTarget.name}"
                 else -> "build/konfig/unsupported"
             }
