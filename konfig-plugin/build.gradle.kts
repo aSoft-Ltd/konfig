@@ -46,7 +46,7 @@ pluginBundle {
 
 object vers {
     object asoft {
-        val konfig = "0.0.1"
+        val konfig = "0.0.2"
         val build_src = "0.0.7"
     }
 

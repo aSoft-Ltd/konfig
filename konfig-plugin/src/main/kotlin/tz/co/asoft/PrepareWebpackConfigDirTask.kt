@@ -12,7 +12,6 @@ open class PrepareWebpackConfigDirTask : DefaultTask() {
     }
 
     @Internal
-    @Optional
     var mppTarget: KotlinTarget? = null
 
     @Input

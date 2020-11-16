@@ -29,6 +29,10 @@ open class GenerateKonfigFileTask : DefaultTask() {
         }.let { File(it).apply { mkdirs() } }
     }
 
+    init {
+        group = "konfig"
+    }
+
     @Internal
     var konfig = Konfig("default", Konfig.Type.DEBUG, mapOf("name" to "default"))
 
@@ -42,8 +46,6 @@ open class GenerateKonfigFileTask : DefaultTask() {
     @get:OutputFile
     val outputFile
         get() = File(outputDir, DEFAULT_KONFIG_FILE_NAME)
-
-    override fun getGroup() = "konfig"
 
     @TaskAction
     fun generate() {
