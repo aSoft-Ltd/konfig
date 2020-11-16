@@ -12,15 +12,23 @@ import java.io.File
 class JsApplicationKonfig(val project: Project, val konfig: Konfig) {
     init {
         with(project) {
+            prepareWebpackConfigDir()
             createWebpackTasks(konfig)
             createRunTasks(konfig)
         }
     }
 
+    private fun Project.prepareWebpackConfigDir() {
+        if (tasks.findByName("prepareWebpackConfigDir") != null) return
+        tasks.create<PrepareWebpackConfigDirTask>("prepareWebpackConfigDir")
+    }
+
     private fun Project.createWebpackTasks(konfig: Konfig) = tasks.create<Copy>("webpack${konfig.name.capitalize()}") {
+        group = "webpack"
         dependsOn(
-            konfig.generateKonfigFileTaskName,
-            "browserProductionWebpack"
+                "prepareWebpackConfigDir",
+                konfig.generateKonfigFileTaskName,
+                "browserProductionWebpack"
         )
         from("build/distributions")
         into("build/websites/${konfig.name}")
@@ -30,7 +38,11 @@ class JsApplicationKonfig(val project: Project, val konfig: Konfig) {
     }
 
     private fun Project.createRunTasks(konfig: Konfig) = tasks.create("run${konfig.name.capitalize()}") {
-        dependsOn(konfig.generateKonfigFileTaskName)
+        group = "run"
+        dependsOn(
+                "prepareWebpackConfigDir",
+                konfig.generateKonfigFileTaskName
+        )
         if (konfig.type == Konfig.Type.DEBUG) {
             finalizedBy("browserDevelopmentRun")
         } else {
