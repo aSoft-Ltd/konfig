@@ -50,7 +50,7 @@ jobs:
       - name: Webpacking Browser
         run: |
           chmod +x ./gradlew
-          ./gradlew webpackDebug
+          ./gradlew clean webpackRelease
         working-directory: ./samples/browser-sample
 
   build-sample-desktop:
@@ -134,7 +134,7 @@ jobs:
       - name: packing website
         run: |
           chmod +x ./gradlew
-          ./gradlew webpackJsRelease
+          ./gradlew clean webpackJsRelease
         working-directory: ./samples/multiplatform-sample
 
   publish-runtime:

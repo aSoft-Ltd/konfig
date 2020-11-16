@@ -44,7 +44,7 @@ jobs:
       - name: Webpacking Browser
         run: |
           chmod +x ./gradlew
-          ./gradlew webpackDebug
+          ./gradlew clean webpackDebug
         working-directory: ./samples/browser-sample
 
   build-sample-desktop:
