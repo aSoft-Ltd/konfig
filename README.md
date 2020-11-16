@@ -40,7 +40,7 @@ Konfig comes with a gradle plugin as a well as a runtime library. Just do the fo
 ```kotlin
 plugins {
     // . . . .
-    id("tz.co.asoft.konfig") version "0.0.1"
+    id("tz.co.asoft.konfig") version "0.0.2"
 }
 
 // . . .
