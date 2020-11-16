@@ -1,4 +1,4 @@
-name: Build Konfig Samples
+name: Build & Deploy Konfig
 
 on:
   push:
@@ -139,7 +139,7 @@ jobs:
 
   publish-runtime:
     runs-on: ubuntu-latest
-    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser,build-konfig-plugin]
+    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
