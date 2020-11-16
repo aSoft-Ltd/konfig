@@ -29,7 +29,7 @@ open class GenerateKonfigFileTask : DefaultTask() {
         }.let { File(it).apply { mkdirs() } }
     }
 
-    @Input
+    @Internal
     var konfig = Konfig("default", Konfig.Type.DEBUG, mapOf("name" to "default"))
 
     @Internal
