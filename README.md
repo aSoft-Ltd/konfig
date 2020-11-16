@@ -170,8 +170,8 @@ konfig{
 ```
 #### Gradle Tasks
 For each of the konfigurations above, the following gradle tasks are set
-1. generate<<Konfig>>KonfigFile -> generates a json file with the set configuration
-2. installRun<<Konfig>> -> a gradle task that installs and runs the specific version on a device or emulator
+1. generate<Konfig>KonfigFile -> generates a json file with the set configuration
+2. installRun<Konfig> -> a gradle task that installs and runs the specific version on a device or emulator
 
 ### JVM Application
 This gradle plugin, applies the native java application plugin and ads a few tasks more
@@ -194,10 +194,10 @@ konfig{
 }
 ```
 #### Gradle Tasks
-1. generate<<Konfig>>KonfigFile -> generate a json file for the konfigurations set
-2. fatJar<<Konfig>> -> generates a fat jar in the `build/libs` of the specific konfiguration
-3. installDist<<Konfig>> -> generates a distributable in `build/binaries` which is package together with it dependencies
-4. run<<Konfig>> -> runs the application depending on the buildType
+1. generate<Konfig>KonfigFile -> generate a json file for the konfigurations set
+2. fatJar<Konfig> -> generates a fat jar in the `build/libs` of the specific konfiguration
+3. installDist<Konfig> -> generates a distributable in `build/binaries` which is package together with it dependencies
+4. run<Konfig> -> runs the application depending on the buildType
 
 ### Browser Application
 This shouldn't be confused with Javascript Applications. As we currently do not support nodejs applications
@@ -217,9 +217,9 @@ konfig{
 ```
 
 #### Gradle Tasks
-1. generate<<Konfig>>KonfigFile -> generates a json konfig file for that konfiguration
-2. webpack<<Konfig>> -> creates a minified webpack bundle that can be deployed to any server
-3. run<<Konfig>> -> opens the browser and runs the konfiguration. You should note that all debug types are not minified for obvious reasons, the rest are minified
+1. generate<Konfig>KonfigFile -> generates a json konfig file for that konfiguration
+2. webpack<Konfig> -> creates a minified webpack bundle that can be deployed to any server
+3. run<Konfig> -> opens the browser and runs the konfiguration. You should note that all debug types are not minified for obvious reasons, the rest are minified
 
 ### Multiplatform Application
 This plugin helps you write multiplatform application in one code base
@@ -240,22 +240,22 @@ konfig{
 ```
 #### Gradle Tasks
 ##### If you have an android target with the name "android", you will get the following tasks
-1. generateAndroid<<Konfig>>KonfigFile -> generate the json config file for the android target
-2. installRunAndroid<<Konfig>> -> install and runs the application on a phone or emulator
+1. generateAndroid<Konfig>KonfigFile -> generate the json config file for the android target
+2. installRunAndroid<Konfig> -> install and runs the application on a phone or emulator
 
 N.B: If your target has a different name, feel free to swap the name with the word androd on the tasks
 
 ##### If you have a jvm target with the name "jvm", you will get the following tasks
-1. generateJVM<<Konfig>>KonfigFile -> generate the json config file for the android target
-2. fatJarJvm<<Konfig>> -> generates a fat jar of the java app in the `build/libs` of the specific konfiguration
-3. runJvm<<Konfig>> -> runs the jvm application
+1. generateJVM<Konfig>KonfigFile -> generate the json config file for the android target
+2. fatJarJvm<Konfig> -> generates a fat jar of the java app in the `build/libs` of the specific konfiguration
+3. runJvm<Konfig> -> runs the jvm application
 
 N.B: To run the JVM application from `kotlin("multiplatform")` gradle plugin, you must declare an attribute "Main-Class" in your Konfig
 
 ##### If you have a browser target with the name "js", you will get the following tasks
-1. generateJs<<Konfig>>KonfigFile -> generates a json konfig file for that konfiguration
-2. webpackJs<<Konfig>> -> creates a minified webpack bundle that can be deployed to any server
-3. runJs<<Konfig>> -> opens the browser and runs the js app with the provided konfiguration. You should note that all debug types are not minified for obvious reasons, the rest are minified
+1. generateJs<Konfig>KonfigFile -> generates a json konfig file for that konfiguration
+2. webpackJs<Konfig> -> creates a minified webpack bundle that can be deployed to any server
+3. runJs<Konfig> -> opens the browser and runs the js app with the provided konfiguration. You should note that all debug types are not minified for obvious reasons, the rest are minified
 
 [badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/test/1.0.1?style=flat
 [badge-mpp]: https://img.shields.io/badge/kotlin-multiplatform-blue?style=flat
