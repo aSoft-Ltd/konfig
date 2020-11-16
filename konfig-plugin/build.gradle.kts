@@ -8,6 +8,7 @@ repositories {
     mavenLocal()
     google()
     jcenter()
+    gradlePluginPortal()
     mavenCentral()
 }
 
@@ -44,11 +45,15 @@ pluginBundle {
 }
 
 object vers {
-    val asoft_konfig = "0.0.1"
+    object asoft {
+        val konfig = "0.0.1"
+        val build_src = "0.0.7"
+    }
+
     val kotlin = "1.4.10"
 }
 group = "tz.co.asoft"
-version = vers.asoft_konfig
+version = vers.asoft.konfig
 
 defaultTasks("jar")
 
@@ -67,4 +72,5 @@ artifacts {
 
 dependencies {
     api("org.jetbrains.kotlin:kotlin-gradle-plugin:${vers.kotlin}")
+    api("gradle.plugin.tz.co.asoft:build-src:${vers.asoft.build_src}")
 }

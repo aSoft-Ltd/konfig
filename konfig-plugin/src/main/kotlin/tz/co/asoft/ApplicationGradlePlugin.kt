@@ -2,30 +2,27 @@ package tz.co.asoft
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Copy
-import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
-import org.gradle.kotlin.dsl.getByName
-import org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
-import org.jetbrains.kotlin.gradle.targets.js.testing.karma.processWebpackName
-import java.io.File
 
 open class ApplicationGradlePlugin : Plugin<Project> {
     private fun Project.applyJvmConfiguration() {
         plugins.apply("application")
         afterEvaluate {
             extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
-                JvmApplicationKonfig(project, it)
+                OnlyJvmApplicationKonfig(project, it)
             }
         }
     }
 
     private fun Project.applyJsConfiguration() = afterEvaluate {
         extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
-            JsApplicationKonfig(project, it)
+            OnlyJsApplicationKonfig(project, it)
+        }
+    }
+
+    private fun Project.applyAndroidConfiguration() = afterEvaluate {
+        extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
+            OnlyAndroidApplicationKonfig(project, it)
         }
     }
 
@@ -36,6 +33,7 @@ open class ApplicationGradlePlugin : Plugin<Project> {
         when {
             plugins.hasPlugin("org.jetbrains.kotlin.jvm") -> applyJvmConfiguration()
             plugins.hasPlugin("org.jetbrains.kotlin.js") -> applyJsConfiguration()
+            plugins.hasPlugin("org.jetbrains.kotlin.android") -> applyAndroidConfiguration()
         }
     }
 }

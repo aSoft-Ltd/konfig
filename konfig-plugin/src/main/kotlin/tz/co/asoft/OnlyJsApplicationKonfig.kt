@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import java.io.File
 
-class JsApplicationKonfig(val project: Project, val konfig: Konfig) {
+class OnlyJsApplicationKonfig(val project: Project, val konfig: Konfig) {
     init {
         with(project) {
             prepareWebpackConfigDir()
