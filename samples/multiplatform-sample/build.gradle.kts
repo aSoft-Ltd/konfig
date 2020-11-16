@@ -47,14 +47,28 @@ kotlin {
         targetJava("1.8")
     }
 
-    jvm{
+    jvm {
         targetJava("1.8")
+    }
+
+    js(IR) {
+        browser()
+        binaries.executable()
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation("tz.co.asoft:konfig:0.0.1")
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+                implementation("org.jetbrains:kotlin-react:17.0.0-pre.129-kotlin-1.4.10")
+                implementation("org.jetbrains:kotlin-styled:5.2.0-pre.129-kotlin-1.4.10")
+                implementation("org.jetbrains:kotlin-react-dom:17.0.0-pre.129-kotlin-1.4.10")
             }
         }
     }

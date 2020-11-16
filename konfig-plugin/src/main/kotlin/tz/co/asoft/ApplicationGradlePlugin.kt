@@ -5,6 +5,8 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 open class ApplicationGradlePlugin : Plugin<Project> {
@@ -19,13 +21,13 @@ open class ApplicationGradlePlugin : Plugin<Project> {
 
     private fun Project.applyJsConfiguration() = afterEvaluate {
         extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
-            OnlyJsApplicationKonfig(project, it)
+            ApplicationKonfigJs(project, it, null)
         }
     }
 
     private fun Project.applyAndroidConfiguration() = afterEvaluate {
         extensions.findByType<KonfigExtension>()?.konfigs?.forEach {
-            ApplicationKonfigAndroid(project, it)
+            ApplicationKonfigAndroid(project, it, null)
         }
     }
 
@@ -39,6 +41,14 @@ open class ApplicationGradlePlugin : Plugin<Project> {
 
                 is KotlinJvmTarget -> konfigs.forEach { konfig ->
                     ApplicationKonfigJvm(project, konfig, target)
+                }
+
+                is KotlinJsTarget -> konfigs.forEach { konfig ->
+                    ApplicationKonfigJs(project, konfig, target)
+                }
+
+                is KotlinJsIrTarget -> konfigs.forEach { konfig ->
+                    ApplicationKonfigJs(project, konfig, target)
                 }
             }
         }

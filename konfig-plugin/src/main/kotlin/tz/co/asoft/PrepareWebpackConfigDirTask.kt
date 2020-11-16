@@ -1,12 +1,9 @@
 package tz.co.asoft
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import java.io.File
-import kotlin.reflect.jvm.internal.impl.descriptors.annotations.KotlinTarget
 
 open class PrepareWebpackConfigDirTask : DefaultTask() {
     @OutputDirectory
@@ -14,7 +11,8 @@ open class PrepareWebpackConfigDirTask : DefaultTask() {
         if (!exists()) mkdirs()
     }
 
-    @Input
+    @Internal
+    @Optional
     var mppTarget: KotlinTarget? = null
 
     @Input

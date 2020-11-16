@@ -15,7 +15,7 @@ import java.io.File
 class ApplicationKonfigAndroid(
     val project: Project,
     val konfig: Konfig,
-    val mppTarget: KotlinAndroidTarget? = null
+    val mppTarget: KotlinAndroidTarget?
 ) {
     init {
         with(project) {
