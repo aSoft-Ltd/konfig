@@ -139,7 +139,7 @@ jobs:
 
   publish-runtime:
     runs-on: ubuntu-latest
-    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser]
+    needs: [build-sample-android,build-sample-browser,build-sample-desktop,build-sample-mpp-android,build-sample-mpp-jvm,build-sample-mpp-browser,build-konfig-plugin]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -157,13 +157,13 @@ jobs:
         run: chmod +x ./gradlew
         working-directory: .
       - name: Building the lib
-        run: ./gradlew build
+        run: ./gradlew :konfig:build
         working-directory: .
       - name: Publishing to sonatype nexus
-        run: ./gradlew publish
+        run: ./gradlew :konfig:publish
         working-directory: .
       - name: Closing And Releasing Repository
-        run: ./gradlew closeAndReleaseRepository
+        run: ./gradlew :konfig:closeAndReleaseRepository
         working-directory: .
 
   publish-plugins:
@@ -182,8 +182,12 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: Making gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: .
+      - name: Building konfig-plugin
+        run: ./gradlew :konfig-plugin:build
+        working-directory: .
       - name: Publishing konfig and application plugins to gradle plugin portal
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
+        run: ./gradlew :konfig-plugin:publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
         working-directory: .
