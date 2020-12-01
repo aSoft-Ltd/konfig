@@ -1,3 +1,7 @@
+# 0.0.3 2020-12-01
+### Bug Fixes
+- Removed flakiness in multimodule setups
+
 # 0.0.2
 ## Availability
 - Published to maven central
