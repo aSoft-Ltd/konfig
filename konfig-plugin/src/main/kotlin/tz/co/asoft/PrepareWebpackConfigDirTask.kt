@@ -25,6 +25,6 @@ open class PrepareWebpackConfigDirTask : DefaultTask() {
 
     @TaskAction
     fun prepare() {
-        outputFile.writeText("""config.resolve.modules.push("../resources/${mppTarget?.name ?: "main"}")""")
+        outputFile.writeText("""config.resolve.modules.push("${project.buildDir.absolutePath}/resources/${mppTarget?.name ?: "main"}")""")
     }
 }
