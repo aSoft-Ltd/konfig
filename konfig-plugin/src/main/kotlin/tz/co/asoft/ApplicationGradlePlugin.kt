@@ -3,11 +3,13 @@ package tz.co.asoft
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import publicRepos
 
 open class ApplicationGradlePlugin : Plugin<Project> {
     private fun Project.applyJvmConfiguration() {
@@ -57,6 +59,7 @@ open class ApplicationGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
         if (!plugins.hasPlugin("tz.co.asoft.konfig")) {
             plugins.apply(KonfigGradlePlugin::class.java)
+            project.repositories { publicRepos() }
         }
         when {
             plugins.hasPlugin("org.jetbrains.kotlin.jvm") -> applyJvmConfiguration()
