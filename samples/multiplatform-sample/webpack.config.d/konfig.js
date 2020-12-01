@@ -1,1 +1,0 @@
-config.resolve.modules.push("../resources/js")

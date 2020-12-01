@@ -1,0 +1,1 @@
+config.resolve.modules.push("/media/andylamax/63C23C360914D355/aSoft/OSS Libs/konfig/code/samples/multimodule-sample/todo-browser/build/resources/main")
